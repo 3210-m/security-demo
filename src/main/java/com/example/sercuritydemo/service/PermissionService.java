@@ -17,8 +17,6 @@ public class PermissionService {
 
   public List<String> getPermissionCodeByUerId(Long userId){
     List<String> codes = permissionRepository.findPermissionCodeByUserId(userId);
-//    List<String> code = new ArrayList<>();
-//    permissions.forEach(p->code.add(p.getCode()));
     return codes;
   }
 }

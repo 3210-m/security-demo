@@ -24,7 +24,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "t_user")
-public class User {
+public class User  {
   @Id
   private Long id;
   @Column(nullable = false)

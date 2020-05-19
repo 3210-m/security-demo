@@ -1,7 +1,9 @@
 package com.example.sercuritydemo.service;
 
 import com.example.sercuritydemo.dao.UserRepository;
+import com.example.sercuritydemo.entity.UserVoDetail;
 import java.util.List;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,9 +32,16 @@ public class SpringDetailService implements UserDetailsService {
     List<String> codeByUerId = permissionService.getPermissionCodeByUerId(user.getId());
     String[] code = new String[codeByUerId.size()];
     codeByUerId.toArray(code);
-    return User.withUsername(user.getUsername())
+//     User.withUsername(user.getUsername())
+//        .password(user.getPassword())
+//        .authorities(code)
+//        .build();
+    return UserVoDetail.builder()
+        .userId(user.getId())
+        .username(user.getUsername())
         .password(user.getPassword())
-        .authorities(code)
+        .fullname(user.getFullname())
+        .authorities(AuthorityUtils.createAuthorityList(code))
         .build();
   }
 }
