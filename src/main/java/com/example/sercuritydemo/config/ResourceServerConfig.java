@@ -6,6 +6,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 
 @Configuration
@@ -15,11 +16,18 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
   private static final String RESOURCE_ID = "res1";
 
 
+  private final TokenStore tokenStore;
+
+  public ResourceServerConfig(
+      TokenStore tokenStore) {
+    this.tokenStore = tokenStore;
+  }
 
   @Override
   public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
     resources.resourceId(RESOURCE_ID)   //资源ID
 //        .tokenServices()    //验证token服务
+        .tokenStore(tokenStore)
         .stateless(true);
   }
 
@@ -33,7 +41,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);    //用token所以关闭session
   }
-//
+
 //  /**
 //   * 资源令牌解析服务.
 //   * @return resourceServerTokenServices

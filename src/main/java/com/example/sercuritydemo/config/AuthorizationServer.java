@@ -1,5 +1,7 @@
 package com.example.sercuritydemo.config;
 
+import java.util.Arrays;
+import java.util.Collections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,10 +13,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 @Configuration
 @EnableAuthorizationServer
@@ -23,15 +27,21 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
   private final TokenStore tokenStore;
   private final ClientDetailsService clientDetailsService;
   private final AuthenticationManager authenticationManager;
+  private final JwtAccessTokenConverter jwtAccessTokenConverter;
+  private final TokenEnhancer tokenEnhancer;
 //  private final AuthorizationCodeServices authorizationCodeServices;
 
   public AuthorizationServer(TokenStore tokenStore,
       ClientDetailsService clientDetailsService,
-      AuthenticationManager authenticationManager) {
+      AuthenticationManager authenticationManager,
+      JwtAccessTokenConverter jwtAccessTokenConverter,
+      TokenEnhancer tokenEnhancer) {
     this.tokenStore = tokenStore;
     this.clientDetailsService = clientDetailsService;
     this.authenticationManager = authenticationManager;
 //    this.authorizationCodeServices = authorizationCodeServices;
+    this.jwtAccessTokenConverter = jwtAccessTokenConverter;
+    this.tokenEnhancer = tokenEnhancer;
   }
 
 
@@ -90,6 +100,11 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     defaultTokenServices.setClientDetailsService(clientDetailsService);   //客户端信息服务
     defaultTokenServices.setSupportRefreshToken(true);    //是否产生刷新令牌
     defaultTokenServices.setTokenStore(tokenStore);   //令牌存储策略
+    //设置令牌增强
+    TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+    tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer, jwtAccessTokenConverter));
+    defaultTokenServices.setTokenEnhancer(tokenEnhancerChain);
+
     defaultTokenServices.setAccessTokenValiditySeconds(1800);   //令牌默认有效期 30min
     defaultTokenServices.setRefreshTokenValiditySeconds(7200);  //刷新令牌默认有效期 2h
     return defaultTokenServices;

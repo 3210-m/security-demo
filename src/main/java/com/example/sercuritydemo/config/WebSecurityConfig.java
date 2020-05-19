@@ -20,15 +20,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-
-//  private final UserDetailsService userDetailsService;
-//
-//  public WebSecurityConfig(
-//      @Qualifier("springDetailService") UserDetailsService userDetailsService) {
-//    this.userDetailsService = userDetailsService;
-//  }
-//
   //密码编码器
   @Bean
   public PasswordEncoder passwordEncoder(){
@@ -49,9 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    http.authorizeRequests()
 //        .antMatchers("/r/**").authenticated()   //所有/r/**的请求都必须认证通过才可以访问
 //        .anyRequest().permitAll();    //其他的可直接访问
-//        .and()
-//        .formLogin()  //  允许表单登陆
-//        .successForwardUrl("/login-success");    //登陆成功返回到自定义页面地址
-
+////        .and()
+////        .formLogin()  //  允许表单登陆
+////        .successForwardUrl("/login-success");    //登陆成功返回到自定义页面地址
+//
 //  }
 }

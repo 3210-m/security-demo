@@ -19,4 +19,9 @@ public class TestBCrypt {
     System.out.println(new BCryptPasswordEncoder().encode("secret"));
 
   }
+
+  @Test
+  public void testGensalt() {
+    System.out.println(BCrypt.gensalt());
+  }
 }
