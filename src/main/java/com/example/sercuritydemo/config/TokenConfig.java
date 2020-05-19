@@ -24,7 +24,8 @@ public class TokenConfig {
    */
   @Bean
   public TokenStore tokenStore(){
-    return new JwtTokenStore(jwtAccessTokenConverter());
+    return new InMemoryTokenStore();
+//    return new JwtTokenStore(jwtAccessTokenConverter());
   }
 
   private JwtAccessTokenConverter jwtAccessTokenConverter(){
@@ -34,21 +35,21 @@ public class TokenConfig {
     return converter;
   }
 
-  @Bean
-  public TokenEnhancer tokenEnhancer() {
-    return (accessToken, authentication) -> {
-      UserVoDetail userDto = (UserVoDetail) authentication.getUserAuthentication().getPrincipal();
-      final Map<String, Object> additionalInfo = new HashMap<>();
-      additionalInfo.put("license", "pwl");
-      additionalInfo.put("userId", userDto.getUserId());
-      additionalInfo.put("username", userDto.getUsername());
-      additionalInfo.put("fullname", userDto.getFullname());
-      ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
-      //设置token的过期时间30分钟
-      Calendar nowTime = Calendar.getInstance();
-      nowTime.add(Calendar.MINUTE, 30);
-      ((DefaultOAuth2AccessToken) accessToken).setExpiration(nowTime.getTime());
-      return accessToken;
-    };
-  }
+//  @Bean
+//  public TokenEnhancer tokenEnhancer() {
+//    return (accessToken, authentication) -> {
+//      UserVoDetail userDto = (UserVoDetail) authentication.getUserAuthentication().getPrincipal();
+//      final Map<String, Object> additionalInfo = new HashMap<>();
+//      additionalInfo.put("license", "pwl");
+//      additionalInfo.put("userId", userDto.getUserId());
+//      additionalInfo.put("username", userDto.getUsername());
+//      additionalInfo.put("fullname", userDto.getFullname());
+//      ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+//      //设置token的过期时间30分钟
+//      Calendar nowTime = Calendar.getInstance();
+//      nowTime.add(Calendar.MINUTE, 30);
+//      ((DefaultOAuth2AccessToken) accessToken).setExpiration(nowTime.getTime());
+//      return accessToken;
+//    };
+//  }
 }

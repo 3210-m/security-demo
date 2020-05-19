@@ -44,16 +44,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
   //配置安全拦截机制
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
-//        .antMatchers("/r/r1").hasAuthority("a")
-//        .antMatchers("/r/r2").hasAuthority("b")
-        .antMatchers("/r/**").authenticated()   //所有/r/**的请求都必须认证通过才可以访问
-        .anyRequest().permitAll()    //其他的可直接访问
-        .and()
-        .formLogin()  //  允许表单登陆
-        .successForwardUrl("/login-success");    //登陆成功返回到自定义页面地址
+//  @Override
+//  protected void configure(HttpSecurity http) throws Exception {
+//    http.authorizeRequests()
+//        .antMatchers("/r/**").authenticated()   //所有/r/**的请求都必须认证通过才可以访问
+//        .anyRequest().permitAll();    //其他的可直接访问
+//        .and()
+//        .formLogin()  //  允许表单登陆
+//        .successForwardUrl("/login-success");    //登陆成功返回到自定义页面地址
 
-  }
+//  }
 }
